@@ -1,0 +1,9 @@
+{
+  "eslint.run": "onType",
+  "prettier.arrowParens": "always",
+  "prettier.singleQuote": false,
+  "prettier.semi": true,
+  "prettier.tabWidth": 2,
+  "prettier.trailingComma": "none",
+  "prettier.printWidth": 80
+}
