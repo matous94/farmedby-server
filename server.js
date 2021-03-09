@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const cors = require("cors");
 const { ParseServer } = require("parse-server");
 
 const app = express();
@@ -14,6 +15,7 @@ const api = new ParseServer({
   serverURL: `${process.env.SERVER_URL}/parse` // Don't forget to change to https if needed
 });
 
+app.use(cors());
 // Serve the Parse API on the /parse URL prefix
 app.use("/parse", api);
 
