@@ -2,7 +2,9 @@ Parse.Cloud.define(
   "createFarm",
   async ({ user, params }) => {
     const hasFarm = Boolean(
-      await new Parse.Query("Farm").equalTo("owner", user).first()
+      await new Parse.Query("Farm")
+        .equalTo("owner", user)
+        .first({ useMasterKey: true })
     );
 
     if (hasFarm) {
@@ -10,7 +12,10 @@ Parse.Cloud.define(
     }
 
     const farm = new Parse.Object("Farm");
-    await farm.save({ ...params.farmData, owner: user });
+    await farm.save(
+      { ...params.farmData, owner: user },
+      { useMasterKey: true }
+    );
     const response = farm.toJSON();
     delete response.owner;
     return response;
@@ -23,7 +28,9 @@ Parse.Cloud.define(
 Parse.Cloud.define(
   "getMyFarm",
   ({ user }) => {
-    return new Parse.Query("Farm").equalTo("owner", user).first();
+    return new Parse.Query("Farm")
+      .equalTo("owner", user)
+      .first({ useMasterKey: true });
   },
   {
     requireUser: true
@@ -31,7 +38,9 @@ Parse.Cloud.define(
 );
 
 Parse.Cloud.define("getFarmById", async ({ user, params }) => {
-  let farm = await new Parse.Query("Farm").get(params.farmId);
+  let farm = await new Parse.Query("Farm").get(params.farmId, {
+    useMasterKey: true
+  });
   if (!farm) throw new Error("Farm does not exist.");
   farm = farm.toJSON();
 
