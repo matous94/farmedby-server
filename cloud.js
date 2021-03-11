@@ -26,6 +26,17 @@ Parse.Cloud.define(
 );
 
 Parse.Cloud.define(
+  "updateFarm",
+  async ({ user, params }) => {
+    const farm = await new Parse.Query("Farm")
+      .equalTo("owner", user)
+      .first({ useMasterKey: true });
+    await farm.save(params.farmData, { useMasterKey: true });
+  },
+  { requireUser: true }
+);
+
+Parse.Cloud.define(
   "getMyFarm",
   ({ user }) => {
     return new Parse.Query("Farm")
