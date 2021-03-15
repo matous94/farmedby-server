@@ -41,6 +41,7 @@ Parse.Cloud.define(
   ({ user }) => {
     return new Parse.Query("Farm")
       .equalTo("owner", user)
+      .include(["pickupPoints", "boxes"])
       .first({ useMasterKey: true });
   },
   {
@@ -49,7 +50,7 @@ Parse.Cloud.define(
 );
 
 Parse.Cloud.define("getFarmById", async ({ user, params }) => {
-  let farm = await new Parse.Query("Farm").get(params.farmId, {
+  let farm = await new Parse.Query("Farm").get(params.objectId, {
     useMasterKey: true
   });
   if (!farm) throw new Error("Farm does not exist.");
@@ -63,31 +64,54 @@ Parse.Cloud.define("getFarmById", async ({ user, params }) => {
   return farm;
 });
 
-// Parse.Cloud.define("averageStars", async (request) => {
-//   const query = new Parse.Query("Review");
-//   query.equalTo("movie", request.params.movie);
-//   const results = await query.find();
-//   let sum = 0;
-//   for (let i = 0; i < results.length; ++i) {
-//     sum += results[i].get("stars");
-//   }
-//   return sum / results.length;
-// },{
-// // fields can be also an array
-//   fields : {
-//     movie : {
-//       required: true,
-//       type: String,
-//       options: val => {
-//         return val.length < 20;
-//       },
-//       error: "Movie must be less than 20 characters"
-//     }
-//   },
-//   requireUserKeys: {
-//     accType : {
-//       options: 'reviewer',
-//       error: 'Only reviewers can get average stars'
-//     }
-//   }
-// });
+Parse.Cloud.define(
+  "savePickupPoint",
+  async ({ user, params }) => {
+    const { pickupPointData } = params;
+    const farm = await new Parse.Query("Farm")
+      .equalTo("owner", user)
+      .first({ useMasterKey: true });
+
+    const isNew = pickupPointData.objectId == null;
+
+    if (isNew) {
+      const point = new Parse.Object("PickupPoint");
+      Object.entries(pickupPointData).forEach(([key, value]) =>
+        point.set(key, value)
+      );
+      farm.add("pickupPoints", point);
+      await farm.save(null, { useMasterKey: true });
+      return point.toJSON();
+    }
+
+    const point = await new Parse.Query(
+      "PickupPoint"
+    ).get(pickupPointData.objectId, { useMasterKey: true });
+    await point.save(pickupPointData);
+    return point.toJSON();
+  },
+  { requireUser: true }
+);
+
+Parse.Cloud.define(
+  "deletePickupPoint",
+  async ({ user, params }) => {
+    const point = await new Parse.Query("PickupPoint").get(params.objectId, {
+      useMasterKey: true
+    });
+    if (point == null) return;
+
+    const farm = await new Parse.Query("Farm")
+      .equalTo("pickupPoints", point)
+      .equalTo("owner", user)
+      .first({ useMasterKey: true });
+
+    if (farm) {
+      await point.destroy();
+      return;
+    }
+
+    throw new Error("Not authorized.");
+  },
+  { requireUser: true }
+);
