@@ -8,7 +8,7 @@ const app = express();
 
 const api = new ParseServer({
   databaseURI: `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOSTNAME}?retryWrites=true&w=majority`, // Connection string for your MongoDB database
-  cloud: path.join(__dirname, "cloud.js"), // Absolute path to your Cloud Code
+  cloud: path.join(__dirname, "cloud-functions.js"), // Absolute path to your Cloud Code
   appId: process.env.APP_ID,
   masterKey: process.env.MASTER_KEY, // Keep this key secret!
   // fileKey: "optionalFileKey",
