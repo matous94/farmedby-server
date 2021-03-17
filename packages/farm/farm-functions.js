@@ -76,15 +76,26 @@ Parse.Cloud.define("getFarms", async ({ params }) => {
     .equalTo("countryCode", countryCode)
     .equalTo("published", true)
     .include(["pickupPoints"])
-    .select("name", "productTypes", "pickupPoints.city")
+    .select(
+      "name",
+      "productTypes",
+      "isPickupPoint",
+      "city",
+      "pickupPoints.city"
+    )
     .find({ useMasterKey: true });
 
-  return farms.map((farm) => ({
-    objectId: farm.id,
-    name: farm.get("name"),
-    productTypes: farm.get("productTypes"),
-    pickupPoints: farm
+  return farms.map((farm) => {
+    const deliversTo = farm
       .get("pickupPoints")
-      .map((point) => ({ city: point.get("city") }))
-  }));
+      .map((point) => point.get("city"));
+    if (farm.get("isPickupPoint")) deliversTo.push(farm.get("city"));
+
+    return {
+      objectId: farm.id,
+      name: farm.get("name"),
+      productTypes: farm.get("productTypes"),
+      deliversTo: [...new Set(deliversTo)]
+    };
+  });
 });
