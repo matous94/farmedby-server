@@ -41,7 +41,7 @@ Parse.Cloud.define(
   ({ user }) => {
     return new Parse.Query("Farm")
       .equalTo("owner", user)
-      .include(["pickupPoints", "boxes"])
+      .include(["pickupPoints", "subscriptions"])
       .first({ useMasterKey: true });
   },
   {
@@ -51,7 +51,7 @@ Parse.Cloud.define(
 
 Parse.Cloud.define("getFarmById", async ({ user, params }) => {
   let farm = await new Parse.Query("Farm")
-    .include(["pickupPoints", "boxes"])
+    .include(["pickupPoints", "subscriptions"])
     .get(params.objectId, {
       useMasterKey: true
     });
