@@ -1,6 +1,7 @@
 require("./packages/farm/farm-functions");
 require("./packages/pickup-point/pickup-point-functions");
 require("./packages/subscription/subscription-functions");
+require("./packages/order/order-functions");
 
 Parse.Cloud.define("subscribeToNewsletter", async ({ params }) => {
   const { email } = params;
