@@ -38,11 +38,19 @@ Parse.Cloud.define(
 
 Parse.Cloud.define(
   "getMyFarm",
-  ({ user }) => {
-    return new Parse.Query("Farm")
+  async ({ user }) => {
+    let farm = await new Parse.Query("Farm")
       .equalTo("owner", user)
       .include(["pickupPoints", "subscriptions"])
       .first({ useMasterKey: true });
+    farm = farm.toJSON();
+
+    const orders = await new Parse.Query("Order")
+      .equalTo("farmId", farm.objectId)
+      .select("objectId")
+      .find({ useMasterKey: true });
+    farm.ordersIds = orders.map((order) => order.id);
+    return farm;
   },
   {
     requireUser: true
