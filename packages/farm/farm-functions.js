@@ -47,9 +47,17 @@ Parse.Cloud.define(
 
     const orders = await new Parse.Query("Order")
       .equalTo("farmId", farm.objectId)
-      .select("objectId")
+      .select("objectId", "createdAt", "completed", "pickupPoint.name")
       .find({ useMasterKey: true });
-    farm.ordersIds = orders.map((order) => order.id);
+    farm.orders = orders.map((order) => {
+      const asJson = order.toJSON();
+      return {
+        objectId: asJson.objectId,
+        createdAt: asJson.createdAt,
+        pickupPointName: asJson.pickupPoint.name,
+        completed: asJson.completed
+      };
+    });
     return farm;
   },
   {
