@@ -1,3 +1,5 @@
+const { orderCreatedFarmer, orderCreatedCustomer } = require("../email");
+
 Parse.Cloud.define("createOrder", async ({ params }) => {
   const order = new Parse.Object("Order", {
     completed: false,
@@ -10,7 +12,12 @@ Parse.Cloud.define("createOrder", async ({ params }) => {
     subscriptions: params.subscriptions
   });
   await order.save(null, { useMasterKey: true });
-  return order.toJSON();
+  const orderAsJson = order.toJSON();
+
+  await orderCreatedFarmer(orderAsJson);
+  await orderCreatedCustomer(orderAsJson);
+
+  return orderAsJson;
 });
 
 Parse.Cloud.define("getOrder", async ({ user, params }) => {
