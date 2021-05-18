@@ -1,1 +1,3 @@
-module.exports = require("./email");
+exports.sendEmail = require("./email").sendEmail;
+exports.orderCreatedCustomer = require("./orderCreatedCustomer");
+exports.orderCreatedFarmer = require("./orderCreatedFarmer");
