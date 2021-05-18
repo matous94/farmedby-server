@@ -49,14 +49,14 @@ Next steps:
 
 // TEST EMAIL
 
-// module.exports({
-//   farm: {
-//     countryCode: "CZ",
-//     email: "matousvencl@gmail.com"
-//   },
-//   customer: {
-//     email: "matousvencl@gmail.com"
-//   },
-//   farmId: "qHgur81fHZ",
-//   objectId: "aj8biY509S"
-// });
+module.exports({
+  farm: {
+    countryCode: "CZ",
+    email: "matousvencl@gmail.com"
+  },
+  customer: {
+    email: "matousvencl@gmail.com"
+  },
+  farmId: "qHgur81fHZ",
+  objectId: "aj8biY509S"
+});

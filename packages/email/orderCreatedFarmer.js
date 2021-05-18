@@ -5,7 +5,7 @@ module.exports = function orderCreatedFarmer({ farm, farmId, objectId }) {
     subject: "Nová objednávka",
     text: `Právě byla vytvořena nová objednávka, její shrnutí najdeš na následující stránce.
 https://farmedby.com/farm/${farmId}/order/${objectId}
-    
+
 Další kroky:
 1. Zašli objednateli na email potvrzení objednávky s platebními údaji
 2. Vyčkej na platbu
@@ -43,11 +43,11 @@ Next steps:
 };
 
 // TEST EMAIL
-// module.exports({
-//   farm: {
-//     countryCode: "CZ",
-//     email: "matousvencl@gmail.com"
-//   },
-//   farmId: "qHgur81fHZ",
-//   objectId: "aj8biY509S"
-// });
+module.exports({
+  farm: {
+    countryCode: "CZ",
+    email: "matousvencl@gmail.com"
+  },
+  farmId: "qHgur81fHZ",
+  objectId: "aj8biY509S"
+});
