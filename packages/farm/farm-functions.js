@@ -94,7 +94,7 @@ Parse.Cloud.define("getFarms", async ({ params }) => {
     .include(["pickupPoints"])
     .select(
       "city",
-      "isPickupPoint",
+      "isFarmPickupPoint",
       "name",
       "pickupPoints.city",
       "pickupPoints.postcode",
@@ -111,7 +111,7 @@ Parse.Cloud.define("getFarms", async ({ params }) => {
       postcode: point.get("postcode"),
       street: point.get("street")
     }));
-    if (farm.get("isPickupPoint"))
+    if (farm.get("isFarmPickupPoint"))
       deliversTo.push({
         city: farm.get("city"),
         postcode: farm.get("postcode"),
