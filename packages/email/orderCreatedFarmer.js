@@ -10,7 +10,7 @@ Další kroky:
 1. Zašli objednateli na email potvrzení objednávky s platebními údaji
 2. Vyčkej na platbu
 3. Zašli email s prvním datem závozu
-4. Pravidelně doručuj, dle zvolené frekvence`
+4. Pravidelně doručuj, dle frekvence zvoleného odběrového místa`
   };
 
   const translations = {
@@ -31,7 +31,7 @@ Next steps:
 1. Send an order confirmation email with payment details to the customer
 2. Wait for the payment
 3. Send an email containing first delivery date
-4. Deliver regulary according to selected frequency`
+4. Deliver regulary according to selected pickup point frequency`
     }
   };
 
