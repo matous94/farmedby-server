@@ -1,18 +1,22 @@
-Parse.Cloud.define("signUp", async ({ params }) => {
-  const { email, password, firstName, lastName } = params;
+Parse.Cloud.define(
+  "signUp",
+  async ({ params }) => {
+    const { email, password, firstName, lastName } = params;
 
-  const user = new Parse.User({
-    email,
-    username: email,
-    password,
-    firstName,
-    lastName
-  });
+    const user = new Parse.User({
+      email,
+      username: email,
+      password,
+      firstName,
+      lastName
+    });
 
-  await user.save(null, { useMasterKey: true });
+    await user.save(null, { useMasterKey: true });
 
-  return user.toJSON();
-});
+    return user.toJSON();
+  },
+  { fields: ["email", "password", "firstName", "lastName"] }
+);
 
 Parse.Cloud.define("signIn", async ({ params }) => {
   const { email, password } = params;

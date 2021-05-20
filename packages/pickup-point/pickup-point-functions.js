@@ -1,18 +1,32 @@
+function getValidFields(fields) {
+  return {
+    addressLevel1: fields.addressLevel1,
+    city: fields.city,
+    countryCode: fields.countryCode,
+    email: fields.email,
+    name: fields.name,
+    objectId: fields.objectId,
+    phoneNumber: fields.phoneNumber,
+    pickupDay: fields.pickupDay,
+    postcode: fields.postcode,
+    street: fields.street,
+    webUrl: fields.webUrl
+  };
+}
+
 Parse.Cloud.define(
   "savePickupPoint",
   async ({ user, params }) => {
-    const { pickupPointData } = params;
     const farm = await new Parse.Query("Farm")
       .equalTo("owner", user)
       .first({ useMasterKey: true });
 
+    const pickupPointData = getValidFields(params);
+
     const isNew = pickupPointData.objectId == null;
 
     if (isNew) {
-      const point = new Parse.Object("PickupPoint");
-      Object.entries(pickupPointData).forEach(([key, value]) =>
-        point.set(key, value)
-      );
+      const point = new Parse.Object("PickupPoint", pickupPointData);
       farm.add("pickupPoints", point);
       await farm.save(null, { useMasterKey: true });
       return point.toJSON();

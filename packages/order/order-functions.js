@@ -1,24 +1,30 @@
 const { orderCreatedFarmer, orderCreatedCustomer } = require("../email");
 
-Parse.Cloud.define("createOrder", async ({ params }) => {
-  const order = new Parse.Object("Order", {
-    completed: false,
-    customer: params.customer,
-    farm: params.farm,
-    farmId: params.farm.objectId,
-    journal: "",
-    note: params.note,
-    pickupPoint: params.pickupPoint,
-    subscriptions: params.subscriptions
-  });
-  await order.save(null, { useMasterKey: true });
-  const orderAsJson = order.toJSON();
+Parse.Cloud.define(
+  "createOrder",
+  async ({ params }) => {
+    const order = new Parse.Object("Order", {
+      completed: false,
+      customer: params.customer,
+      farm: params.farm,
+      farmId: params.farm.objectId,
+      journal: "",
+      note: params.note || "",
+      pickupPoint: params.pickupPoint,
+      subscriptions: params.subscriptions
+    });
+    await order.save(null, { useMasterKey: true });
+    const orderAsJson = order.toJSON();
 
-  await orderCreatedFarmer(orderAsJson);
-  await orderCreatedCustomer(orderAsJson);
+    await orderCreatedFarmer(orderAsJson);
+    await orderCreatedCustomer(orderAsJson);
 
-  return orderAsJson;
-});
+    return orderAsJson;
+  },
+  {
+    fields: ["customer", "farm", "pickupPoint", "subscriptions"]
+  }
+);
 
 Parse.Cloud.define("getOrder", async ({ user, params }) => {
   const order = await new Parse.Query("Order").get(params.orderId, {

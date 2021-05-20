@@ -1,3 +1,26 @@
+function getValidFields(farmData) {
+  return {
+    about: farmData.about,
+    addressLevel1: farmData.addressLevel1,
+    city: farmData.city,
+    countryCode: farmData.countryCode,
+    email: farmData.email,
+    isFarmPickupPoint: farmData.isFarmPickupPoint,
+    name: farmData.name,
+    objectId: farmData.objectId,
+    owner: farmData.owner,
+    phoneNumber: farmData.phoneNumber,
+    pickupDay: farmData.pickupDay,
+    pickupPoints: farmData.pickupPoints,
+    postcode: farmData.postcode,
+    productTypes: farmData.productTypes,
+    published: farmData.published,
+    street: farmData.street,
+    subscriptions: farmData.subscriptions,
+    webUrl: farmData.webUrl
+  };
+}
+
 Parse.Cloud.define(
   "createFarm",
   async ({ user, params }) => {
@@ -12,15 +35,39 @@ Parse.Cloud.define(
     }
 
     const farm = new Parse.Object("Farm");
+    const farmData = getValidFields(params);
     await farm.save(
-      { ...params.farmData, owner: user },
+      {
+        ...farmData,
+        about: farmData.about || "",
+        addressLevel1: farmData.addressLevel1 || "",
+        isFarmPickupPoint: farmData.isFarmPickupPoint ?? true,
+        phoneNumber: farmData.phoneNumber || "",
+        pickupPoints: farmData.pickupPoints ?? [],
+        published: farmData.published ?? true,
+        owner: user,
+        subscriptions: farmData.subscriptions ?? [],
+        webUrl: farmData.webUrl ?? ""
+      },
       { useMasterKey: true }
     );
     const response = farm.toJSON();
-    delete response.owner;
+    response.owner = {
+      objectId: response.owner.objectId
+    };
     return response;
   },
   {
+    fields: [
+      "city",
+      "countryCode",
+      "email",
+      "name",
+      "pickupDay",
+      "postcode",
+      "productTypes",
+      "street"
+    ],
     requireUser: true
   }
 );
@@ -31,7 +78,7 @@ Parse.Cloud.define(
     const farm = await new Parse.Query("Farm")
       .equalTo("owner", user)
       .first({ useMasterKey: true });
-    await farm.save(params.farmData, { useMasterKey: true });
+    await farm.save(getValidFields(params), { useMasterKey: true });
   },
   { requireUser: true }
 );

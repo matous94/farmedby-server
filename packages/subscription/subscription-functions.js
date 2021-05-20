@@ -1,18 +1,25 @@
+function getValidFields(fields) {
+  return {
+    content: fields.content,
+    name: fields.name,
+    objectId: fields.objectId,
+    options: fields.options
+  };
+}
+
 Parse.Cloud.define(
   "saveSubscription",
   async ({ user, params }) => {
-    const { subscriptionData } = params;
     const farm = await new Parse.Query("Farm")
       .equalTo("owner", user)
       .first({ useMasterKey: true });
 
+    const subscriptionData = getValidFields(params);
+
     const isNew = subscriptionData.objectId == null;
 
     if (isNew) {
-      const subscription = new Parse.Object("Subscription");
-      Object.entries(subscriptionData).forEach(([key, value]) =>
-        subscription.set(key, value)
-      );
+      const subscription = new Parse.Object("Subscription", subscriptionData);
       farm.add("subscriptions", subscription);
       await farm.save(null, { useMasterKey: true });
       return subscription.toJSON();
