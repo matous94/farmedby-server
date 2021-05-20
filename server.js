@@ -3,6 +3,9 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const { ParseServer } = require("parse-server");
+const { validationResult } = require("express-validator");
+
+const userValidation = require("./packages/user/user-validation");
 
 const app = express();
 
@@ -16,6 +19,22 @@ const api = new ParseServer({
 });
 
 app.use(cors());
+app.use(express.json());
+
+function validationResultHandler(req, res, next) {
+  // Finds the validation errors in this request and wraps them in an object with handy functions
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  return next();
+}
+
+// validate cloud functions input
+app.use("/parse/functions", userValidation.functionsRouter);
+app.use("/parse/functions", validationResultHandler);
+
 // Serve the Parse API on the /parse URL prefix
 app.use("/parse", api);
 
