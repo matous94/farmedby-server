@@ -43,6 +43,9 @@ Parse.Cloud.define(
       .equalTo("owner", user)
       .include(["pickupPoints", "subscriptions"])
       .first({ useMasterKey: true });
+
+    if (farm == null) return null;
+
     farm = farm.toJSON();
 
     const orders = await new Parse.Query("Order")
