@@ -3,6 +3,7 @@ require("./packages/pickup-point/pickup-point-functions");
 require("./packages/subscription/subscription-functions");
 require("./packages/order/order-functions");
 require("./packages/user/user-functions");
+require("./packages/legal-documents/legal-documents-functions");
 
 Parse.Cloud.define("subscribeToNewsletter", async ({ params }) => {
   const { email } = params;
