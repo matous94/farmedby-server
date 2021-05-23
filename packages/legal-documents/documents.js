@@ -2,7 +2,8 @@ const path = require("path");
 const fs = require("fs").promises;
 
 const idToDirectoryMapper = {
-  privacyPolicy: "privacy-policy"
+  privacyPolicy: "privacy-policy",
+  termsOfUse: "terms-of-use"
 };
 
 function getDocumentPath(documentId, lastUpdateDate) {
@@ -17,6 +18,10 @@ const documents = {
   privacyPolicy: {
     releaseDate: "5-21-2021",
     lastUpdateDate: "5-21-2021"
+  },
+  termsOfUse: {
+    releaseDate: "5-23-2021",
+    lastUpdateDate: "5-23-2021"
   }
 };
 
