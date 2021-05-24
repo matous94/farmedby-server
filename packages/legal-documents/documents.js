@@ -6,29 +6,33 @@ const idToDirectoryMapper = {
   termsOfUse: "terms-of-use"
 };
 
-function getDocumentPath(documentId, lastUpdateDate) {
+function getDocumentPath({ documentId, lastUpdateDate, languageCode }) {
   return path.join(
     __dirname,
     idToDirectoryMapper[documentId],
-    `${lastUpdateDate}.json`
+    `${lastUpdateDate}-${languageCode}.md`
   );
 }
 
 const documents = {
   privacyPolicy: {
-    releaseDate: "5-21-2021",
-    lastUpdateDate: "5-21-2021"
+    releaseDate: "5-24-2021",
+    lastUpdateDate: "5-24-2021"
   },
   termsOfUse: {
-    releaseDate: "5-23-2021",
-    lastUpdateDate: "5-23-2021"
+    releaseDate: "5-24-2021",
+    lastUpdateDate: "5-24-2021"
   }
 };
 
-exports.getDocument = async (documentId) => {
+exports.getDocument = async ({ documentId, languageCode }) => {
   const document = { ...documents[documentId] };
-  document.json = await fs.readFile(
-    getDocumentPath(documentId, document.lastUpdateDate),
+  document.content = await fs.readFile(
+    getDocumentPath({
+      documentId,
+      languageCode,
+      lastUpdateDate: document.lastUpdateDate
+    }),
     { encoding: "utf8" }
   );
   return document;
