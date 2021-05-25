@@ -3,6 +3,7 @@ function getValidFields(fields) {
     addressLevel1: fields.addressLevel1,
     city: fields.city,
     countryCode: fields.countryCode,
+    deliveryPeriod: fields.deliveryPeriod,
     email: fields.email,
     name: fields.name,
     objectId: fields.objectId,

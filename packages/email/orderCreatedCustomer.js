@@ -16,7 +16,7 @@ Další kroky:
 1. Vyčkej na email od farmáře s platebními údaji (${farm.email})
 2. Zaplať objednávku
 3. Vyčkej na email s prvním datem závozu
-4. Pravidelně vyzvedávej (${pickupPoint.pickupDay})`
+4. Pravidelně vyzvedávej dle zvoleného odběrového místa`
   };
 
   const translations = {
@@ -37,7 +37,7 @@ Next steps:
 1. Wait for an email from the farmer with payment details (${farm.email})
 2. Make the payment
 3. Wait for an email containing first delivery date
-4. Pick up regular deliveries (${pickupPoint.pickupDay})`
+4. Pick up regular deliveries according to selected pickup point`
     }
   };
 

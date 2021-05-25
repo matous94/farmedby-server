@@ -31,7 +31,7 @@ Next steps:
 1. Send an order confirmation email with payment details to the customer
 2. Wait for the payment
 3. Send an email containing first delivery date
-4. Deliver regulary according to selected pickup point frequency`
+4. Deliver regularly according to selected pickup point`
     }
   };
 

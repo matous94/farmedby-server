@@ -1,6 +1,7 @@
 function getValidFields(fields) {
   return {
     content: fields.content,
+    maximumNumberOfDeliveries: fields.maximumNumberOfDeliveries,
     name: fields.name,
     objectId: fields.objectId,
     options: fields.options
