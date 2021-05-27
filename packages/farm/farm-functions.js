@@ -115,7 +115,7 @@ Parse.Cloud.define(
   }
 );
 
-Parse.Cloud.define("getFarmById", async ({ user, params }) => {
+Parse.Cloud.define("getFarmById", async ({ params }) => {
   let farm = await new Parse.Query("Farm")
     .include(["pickupPoints", "subscriptions"])
     .get(params.objectId, {
@@ -124,10 +124,10 @@ Parse.Cloud.define("getFarmById", async ({ user, params }) => {
   if (!farm) throw new Error("Farm does not exist.");
   farm = farm.toJSON();
 
-  const isOwner = user && user.id === farm.owner.objectId;
-  if (!farm.published && !isOwner) {
-    throw new Error("Farm is not publicly available.");
-  }
+  // const isOwner = user && user.id === farm.owner.objectId;
+  // if (!farm.published && !isOwner) {
+  //   throw new Error("Farm is not publicly available.");
+  // }
 
   return farm;
 });
