@@ -1,7 +1,8 @@
 function getValidFields(fields) {
   return {
-    content: fields.content,
+    description: fields.description,
     endOfSeason: fields.endOfSeason,
+    farmId: fields.farmId,
     maximumNumberOfDeliveries: fields.maximumNumberOfDeliveries,
     name: fields.name,
     objectId: fields.objectId,
