@@ -22,7 +22,7 @@ Další kroky:
       subject: czTranslations.subject,
       text: czTranslations.text
     },
-    EN: {
+    GB: {
       subject: "New order",
       text: `A new order have just been created. You can find its summary at the following page.
 https://farmedby.com/farm/${farmId}/order/${objectId}
@@ -35,10 +35,28 @@ Next steps:
     }
   };
 
+  let farmEmail = farm.email;
+
+  if (
+    farmEmail === "ilustrace2@farmedby.com" ||
+    farmEmail === "ilustrace3@farmedby.com" ||
+    farmEmail === "illustration1@farmedby.com" ||
+    farmEmail === "illustration2@farmedby.com" ||
+    farmEmail === "illustration3@farmedby.com" ||
+    farmEmail === "ilustracia1@farmedby.com" ||
+    farmEmail === "ilustracia2@farmedby.com" ||
+    farmEmail === "ilustracia3@farmedby.com" ||
+    farmEmail === "ilustrace4@farmedby.com" ||
+    farmEmail === "test@farmedby.com" ||
+    farmEmail === "matous@farmedby.com"
+  ) {
+    farmEmail = "matousvencl@gmail.com";
+  }
+
   return sendEmail({
-    receivers: [farm.email],
-    subject: translations[farm.countryCode].subject || translations.EN,
-    text: translations[farm.countryCode].text || translations.EN
+    receivers: [farmEmail],
+    subject: translations[farm.countryCode]?.subject || translations.GB,
+    text: translations[farm.countryCode]?.text || translations.GB
   });
 };
 

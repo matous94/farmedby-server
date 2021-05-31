@@ -4,8 +4,7 @@ module.exports = function orderCreatedCustomer({
   customer,
   farm,
   farmId,
-  objectId,
-  pickupPoint
+  objectId
 }) {
   const czTranslations = {
     subject: "Shrnutí objednávky",
@@ -28,7 +27,7 @@ Další kroky:
       subject: czTranslations.subject,
       text: czTranslations.text
     },
-    EN: {
+    GB: {
       subject: "New order",
       text: `A new order have just been created. You can find its summary at the following page.
 https://farmedby.com/farm/${farmId}/order/${objectId}
@@ -43,8 +42,8 @@ Next steps:
 
   return sendEmail({
     receivers: [customer.email],
-    subject: translations[farm.countryCode].subject || translations.EN,
-    text: translations[farm.countryCode].text || translations.EN
+    subject: translations[farm.countryCode]?.subject || translations.GB,
+    text: translations[farm.countryCode]?.text || translations.GB
   });
 };
 
