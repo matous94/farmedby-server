@@ -63,7 +63,6 @@ Parse.Cloud.define(
       "countryCode",
       "email",
       "name",
-      "pickupDay",
       "postcode",
       "productTypes",
       "street"
