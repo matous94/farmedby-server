@@ -18,6 +18,7 @@ const api = new ParseServer({
   // fileKey: "optionalFileKey",
   serverURL: `${process.env.SERVER_URL}/parse`, // Don't forget to change to https if needed
   publicServerURL: "https://server.farmedby.com/parse",
+  revokeSessionOnPasswordReset: false,
   emailAdapter: {
     module: "parse-smtp-template",
     options: {
