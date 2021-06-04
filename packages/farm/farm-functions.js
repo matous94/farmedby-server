@@ -55,6 +55,7 @@ Parse.Cloud.define(
     response.owner = {
       objectId: response.owner.objectId
     };
+    response.orders = [];
     return response;
   },
   {
