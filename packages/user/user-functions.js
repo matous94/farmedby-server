@@ -53,3 +53,32 @@ Parse.Cloud.define(
   },
   { requireUser: true }
 );
+
+Parse.Cloud.define(
+  "destroyUserAndFarm",
+  async ({ user }) => {
+    const farm = await new Parse.Query("Farm")
+      .equalTo("owner", user)
+      .include(["pickupPoints", "subscriptions"])
+      .first({ useMasterKey: true });
+
+    if (farm) {
+      const pickupPoints = farm.get("pickupPoints");
+      const destroyPointsPromises = pickupPoints.map((point) =>
+        point.destroy({ useMasterKey: true })
+      );
+      await Promise.all(destroyPointsPromises);
+
+      const subscriptions = farm.get("subscriptions");
+      const destroySubscriptionsPromises = subscriptions.map((point) =>
+        point.destroy({ useMasterKey: true })
+      );
+      await Promise.all(destroySubscriptionsPromises);
+
+      await farm.destroy({ useMasterKey: true });
+    }
+
+    await user.destroy({ useMasterKey: true });
+  },
+  { requireUser: true }
+);
